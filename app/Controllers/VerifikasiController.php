@@ -158,6 +158,7 @@ class VerifikasiController extends BaseController
     $verifikasiModel = new VerifikasiModel();
         $verifikasi = $verifikasiModel->joinDetailPenatausahaan()->findAll($id);
         $lastQuery = $verifikasiModel->getLastQuery();
+        // var_dump($lastQuery);
         // echo $lastQuery;
         
 
@@ -172,8 +173,15 @@ class VerifikasiController extends BaseController
 public function download($id)
 {
     $data = $this->VerifikasiModel->find($id);
-    return $this->response->download(ROOTPATH . 'public/uploads/spj/' . $data['file_spj'], null);
+ 
+    // return $this->response->download(ROOTPATH . 'public/uploads/spj/' . $data['file_spj'], null);
 }
-
+public function htmlToPDF(){
+    $dompdf = new \Dompdf\Dompdf(); 
+    $dompdf->loadHtml(view('pdf_view'));
+    $dompdf->setPaper('A4', 'landscape');
+    $dompdf->render();
+    $dompdf->stream();
+}
     
 }
